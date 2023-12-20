@@ -1,0 +1,44 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         String    @id @default(uuid())
+  username   String
+  password   String
+  role       String
+  comments   Comment[]
+  cearatedAt DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+}
+
+enum Genre{
+  COMEDY
+  ACTION
+  ROMANCE
+
+}
+
+model Moive {
+  id          String    @id @default(uuid())
+  title       String
+  duration    Int
+  ritings     String
+  comments    Comment[]
+  genre       String
+  releaseDate DateTime  @default(now())
+}
+
+model Comment {
+  id       String @id @default(uuid())
+  text     String
+  movie_id String
+  moviee   Moive  @relation(fields: [movie_id], references: [id])
+  user_id  String
+  userr    User   @relation(fields: [user_id], references: [id])
+}
